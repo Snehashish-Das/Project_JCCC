@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            color: rgb(238, 255, 2);
+            text-align: center;
+            margin-bottom: 40px;
+            animation: zoomInOut 3s infinite alternate;
+        }
+
+        @keyframes zoomInOut {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .typing-animation {
+            overflow: hidden;
+            white-space: nowrap;
+            margin: 0 auto;
+            animation: typing 4s steps(30, end) infinite, blink-caret 1s step-end infinite alternate;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+            from,
+            to {
+                border-color: transparent
+            }
+            50% {
+                border-color: orange
+            }
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #001aff;
+            width: 50%;
+            padding: 8px; /* Adjusted padding to make button smaller */
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #00ff80;
+        }
+
+        .result {
+            margin-top: 30px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 0;
+            border: 1px solid transparent;
+            border-radius: 5px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .alert-show {
+            opacity: 1;
+            transform: translateY(0);
+            animation: popIn 0.5s ease forwards;
+        }
+
+        @keyframes popIn {
+            0% {
+                transform: scale(0);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .alert-success {
+            background-color: #28a745;
+            color: #fff;
+            border-color: #218838;
+        }
+
+        .alert-danger {
+            background-color: #dc3545;
+            color: #fff;
+            border-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="zoom-in-out">Review Sentiment Analysis</h1>
+        <hr>
+        <form id="sentiment-form" method="POST" action="{{ url_for('analyze_sentiment') }}">
+            <div class="form-group">
+                <label for="comment" class="typing-animation">Enter your comment:</label>
+                <textarea class="form-control" id="comment" name="comment" placeholder="Write your comment here..." rows="6"></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Analyze</button>
+            </div>
+        </form>
+
+        <div id="result" class="result">
+            {% if sentiment is defined %}
+                {% if sentiment == 1 %}
+                    <div class="alert alert-success alert-show" role="alert">Positive comment!</div>
+                {% else %}
+                    <div class="alert alert-danger alert-show" role="alert">Negative comment!</div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+</html>
